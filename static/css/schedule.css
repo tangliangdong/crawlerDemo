@@ -1,0 +1,29 @@
+body{
+
+}
+.schedule_table{
+    width: 100%;
+    border-spacing: 0;
+}
+.schedule_table td{
+    border-right: 1px #c5eeeb solid;
+    border-left: 1px #c5eeeb solid;
+    background-color: #eee;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    height: 60px;
+}
+.schedule_table .has-lesson{
+    border-radius: 5px;
+    font-size: 10px;
+    padding: 10px 2px;
+    background: url("../img/cloud_background.png");
+}
+
+.schedule_table .table-title{
+    /*width: 12%;*/
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #f5b91d;
+}
