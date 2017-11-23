@@ -16,7 +16,6 @@
 $gradeService = new GradeService();
 $fromUsername = $_GET['username'];
 $result = $gradeService->getGrade($fromUsername);
-//print_r($result);
 $sum1 = 0.0;
 $sum2 = 0.0;
 $sum1_credits = 0;

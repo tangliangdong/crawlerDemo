@@ -36,7 +36,7 @@ class FileService{
             // 输出数据
             while ($row = $result->fetch_assoc()) {
                 $date = date("Y-m-d H:i", $row['add_time']);
-                $word = $word . '<a href="http://zzz.tangliangdong.me/weixin' . $row['file_path'] . '">' . $date . '</a>' . "\n";
+                $word = $word . '<a href="http://zzz.tangliangdong.me/weixin/' . $row['file_path'] . '">' . $date . '</a>' . "\n";
             }
             $word = $word . "\n" . '<a href="http://zzz.tangliangdong.me/weixin/image.php?event=look_my_image&fromUsername=' . $fromUsername . '">浏览所有照片</a>';
         } else {

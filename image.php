@@ -7,7 +7,7 @@ $username = $DB->username;
 $password = $DB->password;
 $dbname = $DB->dbname;
 $conn = new mysqli($servername, $username, $password, $dbname);
-mysql_query('SET NAME UTF8');
+//mysql_query('SET NAME UTF8');
 
 switch($DoEvent){
   case 'look_my_image':
@@ -19,7 +19,7 @@ switch($DoEvent){
       // 输出数据
       while($row = $result->fetch_assoc()) {
         $date = date("Y-m-d H:i",$row['add_time']);
-        $word = $word .'<img src="http://zzz.tangliangdong.me/weixin'.$row['file_path'].'"/><br/>';
+        $word = $word .'<img src="http://zzz.tangliangdong.me/weixin/'.$row['file_path'].'"/><br/>';
       }
     }else{
       $word = '未发送过照片';
@@ -30,7 +30,7 @@ switch($DoEvent){
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">

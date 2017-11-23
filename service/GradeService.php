@@ -140,7 +140,6 @@ class GradeService{
         }else{
             $res[3] = '';
         }
-
         return $res;
     }
 
@@ -153,6 +152,5 @@ class GradeService{
             $value = $matches[0];
         }
         return $str[0];
-//        print_r($str);
     }
 }

@@ -28,7 +28,7 @@ class wechatCallbackapiTest{
 
     public function responseMsg()
     {
-        $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
+        $postStr = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : file_get_contents("php://input");
 //        $DB = new Db();
 //        $conn = $DB->getConnection();
 //        $servername = $DB->servername;
@@ -42,7 +42,8 @@ class wechatCallbackapiTest{
         $certificateService = new CertificateService();
 
         if (!empty($postStr)) {
-            libxml_disable_entity_loader(true);//防止文件泄漏
+//            $this->logger('R ',$postStr);
+            libxml_disable_entity_loader(true);//防止文件泄漏 安全防御
             $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
             $fromUsername = $postObj->FromUserName;
             $toUsername = $postObj->ToUserName;
@@ -51,8 +52,6 @@ class wechatCallbackapiTest{
             $msgId = $postObj->MsgId;
             $keyword = trim($postObj->Content);
             $time = time();
-
-
 
             // echo print_r($json);
             // echo $json[0]->{'pm2_5'};
@@ -189,6 +188,16 @@ class wechatCallbackapiTest{
                     case '新歌榜':
                         $word = $this->get_new_music_list();
                         break;
+                    case '图文':
+                        $record = array(
+                            'title' => '你好世界',
+                            'decription' => '杭州真美丽',
+                            'picUrl' => 'http://img.youai123.com/1507602781-1099.jpg',
+                            'url' => 'https://mp.weixin.qq.com/s?__biz=MzI2MTI5MDI5Ng==&tempkey=OTMyX09FVTIxTjQzQVR1aEZNTk1US184aUxnMzdsdTE3LVZvaGI2THE3cVpIR0k5WWRCY2IzYlVZTUlPM3E1a2JrdDhZanVEQ0VvaXk0N1hxc05KcmtEUDF3X2RDanFtc09ZVjkzYnJfT1hTRGpOc2ItM3N2SHRGc0tneXBKblZ2YXEtaFJLMzI0bkc5WW1VOEJDTnk3S3E2TWg0eHQwejRPVjBCdVpUOVF%2Bfg%3D%3D&chksm=6a5de15f5d2a6849d4d88885bb0fc55f2d49a6d27be13962cb2c97a963e33ebb1d0c2e2dc398#rd',
+                        );
+                        $resultStr = $this->handle_news($postObj,$record);
+                        echo $resultStr;
+                        return;
                     case 'token':
                         $access_token = $this->get_access_token();
                         $word = $access_token->access_token;
@@ -395,108 +404,108 @@ class wechatCallbackapiTest{
         $jsonmenu = '{
         "button": [
             {
-                "name": "博主", 
+                "name": "博主",
                 "sub_button": [
                     {
-                      "type": "view", 
-                      "name": "主页", 
+                      "type": "view",
+                      "name": "主页",
                       "url": "http://www.tangliangdong.me/",
                     },
                     {
-                      "type": "view", 
-                      "name": "博客", 
+                      "type": "view",
+                      "name": "博客",
                       "url": "http://zhizhi.tangliangdong.me/",
                     }
                 ]
-            }, 
+            },
             {
-                "name": "功能", 
+                "name": "功能",
                 "sub_button": [
                     {
-                        "type": "click", 
-                        "name": "查询课表", 
-                        "key": "schedule_btn", 
+                        "type": "click",
+                        "name": "查询课表",
+                        "key": "schedule_btn",
                         "sub_button": [ ]
-                    }, 
+                    },
                     {
-                        "type": "click", 
-                        "name": "查看准考证", 
-                        "key": "check_certificate", 
+                        "type": "click",
+                        "name": "查看准考证",
+                        "key": "check_certificate",
                         "sub_button": [ ]
-                    }, 
+                    },
                     {
-                        "type": "click", 
-                        "name": "查看成绩", 
-                        "key": "check_grade", 
+                        "type": "click",
+                        "name": "查看成绩",
+                        "key": "check_grade",
                         "sub_button": [ ]
-                    }, 
+                    },
                     {
-                        "type": "click", 
-                        "name": "查询照片", 
-                        "key": "query_picture", 
+                        "type": "click",
+                        "name": "查询照片",
+                        "key": "query_picture",
                         "sub_button": [ ]
-                    }, 
+                    },
                     {
                         "type": "pic_photo_or_album", {
         "button": [
             {
-                "name": "博主", 
+                "name": "博主",
                 "sub_button": [
                     {
-                      "type": "view", 
-                      "name": "主页", 
+                      "type": "view",
+                      "name": "主页",
                       "url": "http://www.tangliangdong.me/",
                     },
                     {
-                      "type": "view", 
-                      "name": "博客", 
+                      "type": "view",
+                      "name": "博客",
                       "url": "http://zhizhi.tangliangdong.me/",
                     }
                 ]
-            }, 
+            },
             {
-                "name": "功能", 
+                "name": "功能",
                 "sub_button": [
                     {
-                        "type": "click", 
-                        "name": "查询课表", 
-                        "key": "schedule_btn", 
-                        "sub_button": [ ]
-                    }, 
-                    {
-                        "type": "click", 
-                        "name": "查看准考证", 
-                        "key": "check_certificate", 
-                        "sub_button": [ ]
-                    }, 
-                    {
-                        "type": "click", 
-                        "name": "查看成绩", 
-                        "key": "check_grade", 
-                        "sub_button": [ ]
-                    }, 
-                    {
-                        "type": "click", 
-                        "name": "查询照片", 
-                        "key": "query_picture", 
-                        "sub_button": [ ]
-                    }, 
-                    {
-                        "type": "pic_photo_or_album", 
-                        "name": "拍照或者相册发图", 
-                        "key": "rselfmenu_1_1", 
+                        "type": "click",
+                        "name": "查询课表",
+                        "key": "schedule_btn",
                         "sub_button": [ ]
                     },
-                    
+                    {
+                        "type": "click",
+                        "name": "查看准考证",
+                        "key": "check_certificate",
+                        "sub_button": [ ]
+                    },
+                    {
+                        "type": "click",
+                        "name": "查看成绩",
+                        "key": "check_grade",
+                        "sub_button": [ ]
+                    },
+                    {
+                        "type": "click",
+                        "name": "查询照片",
+                        "key": "query_picture",
+                        "sub_button": [ ]
+                    },
+                    {
+                        "type": "pic_photo_or_album",
+                        "name": "拍照或者相册发图",
+                        "key": "rselfmenu_1_1",
+                        "sub_button": [ ]
+                    },
+
                 ]
             }
         ]
       }
-                        "name": "拍照或者相册发图", 
-                        "key": "rselfmenu_1_1", 
+                        "name": "拍照或者相册发图",
+                        "key": "rselfmenu_1_1",
                         "sub_button": [ ]
                     },
-                    
+
                 ]
             }
         ]
@@ -539,8 +548,47 @@ class wechatCallbackapiTest{
         print_r($jsonData);
         $data = json_decode($jsonData);
         print_r($data);
-        var_dump('11111');
     }
+
+
+    public function handle_news($object,$newCnotent){
+        $newsTplHead = "<xml>
+            <ToUserName><![CDATA[%s]]></ToUserName>
+            <FromUserName><![CDATA[%s]]></FromUserName>
+            <CreateTime>%s</CreateTime>
+            <MsgType><![CDATA[news]]></MsgType>
+            <ArticleCount>1</ArticleCount>
+            <Articles>";
+        $newsTplBody = "<item>
+            <Title><![CDATA[%s]]></Title> 
+            <Description><![CDATA[%s]]></Description>
+            <PicUrl><![CDATA[%s]]></PicUrl>
+            <Url><![CDATA[%s]]></Url>
+            </item>";
+        $newsTplFoot = "</Articles>
+            </xml>";
+        $header = sprintf($newsTplHead,$object->FromUserName,$object->ToUserName,time());
+        $title = $newCnotent['title'];
+        $decription = $newCnotent['decription'];
+        $picUrl = $newCnotent['picUrl'];
+        $url = $newCnotent['url'];
+
+        $body = sprintf($newsTplBody,$title,$decription,$picUrl,$url);
+
+        return $header.$body.$newsTplFoot;
+    }
+
+//    public function logger($log_content){
+//        if($_SERVER['REMOTE_ADDR']!= '127.0.0.1'){
+//            $max_size = 10000;
+//            $log_filename = 'log.xml';
+//            if(file_exists($log_filename) and (abs(filesize($log_filename))>$max_size)){
+//                unlink($log_filename);
+//            }
+//            file_put_contents($log_filename,date('H:i:s').' '.$log_content."\r\n",FILE_APPEND);
+//
+//        }
+//    }
 
 }
 
